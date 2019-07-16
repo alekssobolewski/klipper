@@ -28,8 +28,9 @@ class CoreXYKinematics:
         # Setup stepper max halt velocity
         max_halt_velocity = toolhead.get_max_axis_halt()
         max_xy_halt_velocity = max_halt_velocity * math.sqrt(2.)
-        self.rails[0].set_max_jerk(max_xy_halt_velocity, max_accel)
-        self.rails[1].set_max_jerk(max_xy_halt_velocity, max_accel)
+        max_xy_accel = max_accel * math.sqrt(2.)
+        self.rails[0].set_max_jerk(max_xy_halt_velocity, max_xy_accel)
+        self.rails[1].set_max_jerk(max_xy_halt_velocity, max_xy_accel)
         self.rails[2].set_max_jerk(
             min(max_halt_velocity, self.max_z_velocity), self.max_z_accel)
     def get_steppers(self, flags=""):
@@ -59,10 +60,7 @@ class CoreXYKinematics:
             else:
                 forcepos[axis] += 1.5 * (position_max - hi.position_endstop)
             # Perform homing
-            limit_speed = None
-            if axis == 2:
-                limit_speed = self.max_z_velocity
-            homing_state.home_rails([rail], forcepos, homepos, limit_speed)
+            homing_state.home_rails([rail], forcepos, homepos)
     def motor_off(self, print_time):
         self.limits = [(1.0, -1.0)] * 3
         for rail in self.rails:

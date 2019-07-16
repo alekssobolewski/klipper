@@ -6,6 +6,54 @@ All dates in this document are approximate.
 
 # Changes
 
+20190710: The z_hop option was removed from the [firmware_retract]
+config section. The z_hop support was incomplete and could cause
+incorrect behavior with several common slicers.
+
+20190710: The optional parameters of the PROBE_ACCURACY command have
+changed. It may be necessary to update any macros or scripts that use
+that command.
+
+20190628: All configuration options have been removed from the
+[skew_correction] section.  Configuration for skew_correction
+is now done via the SET_SKEW gcode.  See skew_correction.md
+for recommended usage.
+
+20190607: The "variable_X" parameters of gcode_macro (along with the
+VALUE parameter of SET_GCODE_VARIABLE) are now parsed as Python
+literals. If a value needs to be assigned a string then wrap the value
+in quotes so that it is evaluated as a string.
+
+20190606: The "samples", "samples_result", and "sample_retract_dist"
+config options have been moved to the "probe" config section. These
+options are no longer supported in the "delta_calibrate", "bed_tilt",
+"bed_mesh", "screws_tilt_adjust", "z_tilt", or "quad_gantry_level"
+config sections.
+
+20190528: The magic "status" variable in gcode_macro template
+evaluation has been renamed to "printer".
+
+20190520: The SET_GCODE_OFFSET command has changed; update any g-code
+macros accordingly. The command will no longer apply the requested
+offset to the next G1 command. The old behavior may be approximated by
+using the new "MOVE=1" parameter.
+
+20190404: The Python host software packages were updated. Users will
+need to rerun the ~/klipper/scripts/install-octopi.sh script (or
+otherwise upgrade the python dependencies if not using a standard
+OctoPi installation).
+
+20190404: The i2c_bus and spi_bus parameters (in various config
+sections) now take a bus name instead of a number.
+
+20190404: The sx1509 config parameters have changed. The 'address'
+parameter is now 'i2c_address' and it must be specified as a decimal
+number. Where 0x3E was previously used, specify 62.
+
+20190328: The min_speed value in [temperature_fan] config
+will now be respected and the fan will always run at this
+speed or higher in PID mode.
+
 20190322: The default value for "driver_HEND" in [tmc2660] config
 sections was changed from 6 to 3. The "driver_VSENSE" field was
 removed (it is now automatically calculated from run_current).

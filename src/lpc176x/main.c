@@ -7,6 +7,7 @@
 #include "LPC17xx.h" // NVIC_SystemReset
 #include "command.h" // DECL_CONSTANT
 #include "sched.h" // sched_main
+#include "board/misc.h" // timer_read_time
 
 DECL_CONSTANT_STR("MCU", "lpc176x");
 

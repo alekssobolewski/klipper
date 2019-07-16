@@ -321,11 +321,15 @@ class MessageParser:
                 else:
                     tval = value
                 argparts[name] = tval
+        except error as e:
+            raise
         except:
             #logging.exception("Unable to extract params")
             raise error("Unable to extract params from: %s" % (msgname,))
         try:
             cmd = mp.encode_by_name(**argparts)
+        except error as e:
+            raise
         except:
             #logging.exception("Unable to encode")
             raise error("Unable to encode: %s" % (msgname,))
@@ -380,6 +384,10 @@ class MessageParser:
         except Exception as e:
             logging.exception("process_identify error")
             raise error("Error during identify: %s" % (str(e),))
+    def get_enumerations(self):
+        return dict(self.enumerations)
+    def get_constants(self):
+        return dict(self.config)
     class sentinel: pass
     def get_constant(self, name, default=sentinel, parser=str):
         if name not in self.config:
